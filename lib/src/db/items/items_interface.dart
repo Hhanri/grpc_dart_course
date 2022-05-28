@@ -4,13 +4,13 @@ import 'package:dart_grpc_server/src/generated/groceries.pb.dart';
 abstract class InterfaceItemsServices {
   factory InterfaceItemsServices() => ItemsServices();
 
-  Item? getItemByName(String name);
-  Item? getItemById(int id);
-  Item? createItem(Item item);
-  Item? editItem(Item item);
-  Empty? deleteItem(Item item);
-  List<Item>? getAllItems();
-  List<Item>? getItemsByCategory(int categoryId);
+  Item getItemByName(String name);
+  Item getItemById(int id);
+  Item createItem(Item item);
+  Item editItem(Item item);
+  Empty deleteItem(Item item);
+  List<Item> getAllItems();
+  List<Item> getItemsByCategory(int categoryId);
 
 }
 
