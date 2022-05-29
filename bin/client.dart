@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:dart_grpc_server/dart_grpc_server.dart';
 import 'package:grpc/grpc.dart';
+import 'package:test/test.dart';
 
 class Client {
   ClientChannel? channel;
@@ -69,11 +70,20 @@ class Client {
                 name: name
               );
               response = await stub!.createCategory(category);
-              print('category created: name ${category.name} (id: ${category.id}');
+              print('category created: name ${category.name} (id: ${category.id})');
             }
             break;
           case 8: break;
-          case 9: break;
+          case 9:
+            print('Enter category name:');
+            final name = stdin.readLineSync()!;
+            final category = await _findCategoryByName(name.toLowerCase());
+            if (category.id != 0) {
+              print('category found | name: ${category.name} | id: ${category.id}');
+            } else {
+              print('no category found | no category matches with the name $name');
+            }
+            break;
           case 10: break;
           case 11: break;
           default: print('invalid option');
