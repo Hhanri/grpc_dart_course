@@ -53,8 +53,9 @@ class ItemsServices implements InterfaceItemsServices{
 
   @override
   List<Item> getItemsByCategory(int categoryId) {
-    // TODO: implement getItemsByCategory
-    throw UnimplementedError();
+    var jsonList =  items.where((element) => element['categoryId'] == categoryId).toList();
+    final result = jsonList.map((item) => helper.getItemFromMap(item)).toList();
+    return result;
   }
 
 }

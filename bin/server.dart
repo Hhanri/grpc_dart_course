@@ -54,9 +54,11 @@ class GroceriesService extends GroceriesServiceBase{
   }
 
   @override
-  Future<AllItemsOfCategory> getItemsByCategory(ServiceCall call, Category request) {
-    // TODO: implement getItemsByCategory
-    throw UnimplementedError();
+  Future<AllItemsOfCategory> getItemsByCategory(ServiceCall call, Category request) async {
+    return AllItemsOfCategory(
+      items: itemsServices.getItemsByCategory(request.id),
+      categoryId: request.id
+    );
   }
 
 }

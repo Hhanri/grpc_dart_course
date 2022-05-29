@@ -185,7 +185,21 @@ class Client {
               printNotFound(type: 'category', name: name);
             }
             break;
-          case 11: break;
+
+          case 11:
+            final name = getNameInput('category');
+            final category = await _findCategoryByName(name);
+            if (category.id != 0) {
+              final result = await stub!.getItemsByCategory(category);
+              print('  --- All items of category ${category.name}');
+              result.items.forEach((item) {
+                print(' - name: ${item.name}, id: ${item.id}, categoryId: ${item.categoryId}');
+              });
+            } else {
+              printNotFound(type: 'category', name: name);
+            }
+            break;
+
           default: print('invalid option');
         }
 
