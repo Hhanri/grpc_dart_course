@@ -37,13 +37,12 @@ class GroceriesService extends GroceriesServiceBase{
 
   @override
   Future<Categories> getAllCategories(ServiceCall call, Empty request) async{
-    return Categories()..categories.addAll(categoriesServices.getAllCategories()!);
+    return Categories()..categories.addAll(categoriesServices.getAllCategories());
   }
 
   @override
-  Future<Items> getAllItems(ServiceCall call, Empty request) {
-    // TODO: implement getAllItems
-    throw UnimplementedError();
+  Future<Items> getAllItems(ServiceCall call, Empty request) async {
+    return Items()..items.addAll(itemsServices.getAllItems());
   }
 
   @override
@@ -71,6 +70,7 @@ Future<void> main() async {
     const <Interceptor>[],
     CodecRegistry()
   );
+  await server.shutdown();
   await server.serve(port: 50000);
   print('server listening on port ${server.port}');
 }

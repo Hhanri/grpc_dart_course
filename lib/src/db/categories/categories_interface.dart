@@ -8,7 +8,7 @@ abstract class InterfaceCategoriesServices {
   Category createCategory(Category category);
   Category editCategory(Category category);
   Empty deleteCategory(Category category);
-  List<Category>? getAllCategories();
+  List<Category> getAllCategories();
 }
 
 final categoriesServices = InterfaceCategoriesServices();

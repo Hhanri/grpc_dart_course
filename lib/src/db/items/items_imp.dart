@@ -21,8 +21,9 @@ class ItemsServices implements InterfaceItemsServices{
 
   @override
   List<Item> getAllItems() {
-    // TODO: implement getAllItems
-    throw UnimplementedError();
+    return items.map((item) {
+      return helper.getItemFromMap(item);
+    }).toList();
   }
 
   @override

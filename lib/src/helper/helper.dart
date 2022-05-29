@@ -16,7 +16,7 @@ class HelperMethods {
     int id = item['id'];
     String name = item['name'];
     int categoryId = item['categoryId'];
-    return Item.fromJson('{"$idTag": $id, "$nameTag": $name. "$categoryId": $categoryId}');
+    return Item.fromJson('{"$idTag": $id, "$nameTag": "$name", "$categoryId": "$categoryId"}');
   }
 }
 

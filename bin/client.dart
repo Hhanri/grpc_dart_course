@@ -51,8 +51,15 @@ class Client {
         final option = int.parse(stdin.readLineSync()!);
 
         switch (option) {
-          case 1: break;
-          
+          case 1:
+            print('  --- Store products ---  ');
+            response = await stub!.getAllItems(Empty());
+            print(response);
+            response.items.forEach((item) {
+              print(' - name: ${item.name}, id: ${item.id}, categoryId: ${item.categoryId}');
+            });
+            break;
+
           case 2:
             final name = getNameInput('item');
             final item = await _findItemByName(name);
