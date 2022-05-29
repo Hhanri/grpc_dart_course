@@ -42,7 +42,6 @@ class Client {
         actions.asMap().forEach((index, value) {
           print('${index + 1}: $value');
         });
-
         final option = int.parse(stdin.readLineSync()!);
 
         switch (option) {
@@ -51,7 +50,13 @@ class Client {
           case 3: break;
           case 4: break;
           case 5: break;
-          case 6: break;
+          case 6:
+            response = await stub!.getAllCategories(Empty());
+            print('  --- Store product Categories ---  ');
+            response.categories.forEach((category) {
+              print(' - name: ${category.name}, id: ${category.id}');
+            });
+            break;
           case 7:
             print('Enter category name');
             final name = stdin.readLineSync()!;

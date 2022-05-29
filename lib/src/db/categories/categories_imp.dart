@@ -21,8 +21,9 @@ class CategoriesServices implements InterfaceCategoriesServices {
 
   @override
   List<Category> getAllCategories() {
-    // TODO: implement getAllCategories
-    throw UnimplementedError();
+    return categories.map((category) {
+      return helper.getCategoryFromMap(category);
+    }).toList();
   }
 
   @override
