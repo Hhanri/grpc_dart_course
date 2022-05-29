@@ -15,8 +15,13 @@ class ItemsServices implements InterfaceItemsServices{
 
   @override
   Item editItem(Item item) {
-    // TODO: implement editItem
-    throw UnimplementedError();
+    try {
+      final itemIndex = items.indexWhere((element) => element['id'] == item.id);
+      items[itemIndex]['name'] = item.name;
+    } catch (e) {
+      print(e);
+    }
+    return item;
   }
 
   @override

@@ -41,6 +41,14 @@ class Client {
       return name;
     }
 
+    void printSameNameError() {
+      print('The new provided name is the same as the old one, no changes done');
+    }
+
+    void printNotFound({required String type, required String name}) {
+      print('no $type found | no $type matches with the name $name');
+    }
+
     while (executionInProgress) {
       try {
         print('----- Welcome to the Dart store API -----');
@@ -54,7 +62,6 @@ class Client {
           case 1:
             print('  --- Store products ---  ');
             response = await stub!.getAllItems(Empty());
-            print(response);
             response.items.forEach((item) {
               print(' - name: ${item.name}, id: ${item.id}, categoryId: ${item.categoryId}');
             });
@@ -67,25 +74,39 @@ class Client {
               print('Item already exists: name ${item.name} (id: ${item.id})');
             } else {
               final categoryName = getNameInput('category');
-              final category = await _findCategoryByName(categoryName);
+              final category = await _findCategoryByName(categoryName.toLowerCase());
               if (category.id == 0) {
                 print("category $name doesn't exist");
               } else {
                 final newItem = Item(name: name, id: _randomId(), categoryId: category.id);
                 response = await stub!.createItem(newItem);
-                print('Item created | name: ${item.name} (id: ${item.id})');
+                print('Item created | name: ${newItem.name} (id: ${newItem.id}, categoryId: ${newItem.categoryId})');
               }
             }
             break;
 
-          case 3: break;
+          case 3:
+            final name = getNameInput('item');
+            final item = await _findItemByName(name);
+            if (item.id != 0) {
+              final newName = getNameInput('new item');
+              if (newName != name) {
+                response = await stub!.editItem(Item(id: item.id, name: newName, categoryId: item.categoryId));
+              } else {
+                printSameNameError();
+              }
+            } else {
+              printNotFound(type: 'item', name: name);
+            }
+            break;
+
           case 4:
             final name = getNameInput('item');
             final item = await _findItemByName(name.toLowerCase());
             if (item.id != 0) {
               print('item found | name: ${item.name} | id: ${item.id}');
             } else {
-              print('no item found | no item matches with the name $name');
+              printNotFound(type: 'item', name: name);
             }
             break;
 
@@ -110,7 +131,7 @@ class Client {
                 name: name
               );
               response = await stub!.createCategory(category);
-              print('category created}| name: ${category.name} (id: ${category.id})');
+              print('category created | name: ${category.name} (id: ${category.id})');
             }
             break;
 
@@ -118,13 +139,12 @@ class Client {
             final name = getNameInput('category');
             final category = await _findCategoryByName(name.toLowerCase());
             if (category.id != 0) {
-              print('Please enter new category name');
-              final newName = stdin.readLineSync()!;
+              final newName = getNameInput('new category');
               if (newName != name) {
                 response = await stub!.editCategory(Category(id: category.id, name: newName));
                 print('Category successfully updated | name: ${response.name} | id: ${response.id}');
               } else {
-                print('The new provided name is the same as the old one, no changes done');
+                printSameNameError();
               }
             } else {
               print("category $name doesn't exist");
@@ -137,7 +157,7 @@ class Client {
             if (category.id != 0) {
               print('category found | name: ${category.name} | id: ${category.id}');
             } else {
-              print('no category found | no category matches with the name $name');
+              printNotFound(type: 'category', name: name);
             }
             break;
 
@@ -148,7 +168,7 @@ class Client {
               await stub!.deleteCategory(category);
               print('category $name successfully deleted');
             } else {
-              print('no category found | no category matches with the name $name');
+              printNotFound(type: 'category', name: name);
             }
             break;
           case 11: break;
