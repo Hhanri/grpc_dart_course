@@ -8,9 +8,8 @@ class GroceriesService extends GroceriesServiceBase{
   }
 
   @override
-  Future<Item> createItem(ServiceCall call, Item request) {
-    // TODO: implement createItem
-    throw UnimplementedError();
+  Future<Item> createItem(ServiceCall call, Item request) async {
+    return itemsServices.createItem(request);
   }
 
   @override

@@ -3,8 +3,8 @@ import 'package:dart_grpc_server/dart_grpc_server.dart';
 class ItemsServices implements InterfaceItemsServices{
   @override
   Item createItem(Item item) {
-    // TODO: implement createItem
-    throw UnimplementedError();
+    items.add({'id': item.id, 'name': item.name, 'categoryId': item.categoryId});
+    return item;
   }
 
   @override

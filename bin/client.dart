@@ -35,6 +35,12 @@ class Client {
       'Get all products of a given category'
     ];
 
+    String getNameInput(String type) {
+      print('Enter $type name:');
+      final name = stdin.readLineSync()!;
+      return name;
+    }
+
     while (executionInProgress) {
       try {
         print('----- Welcome to the Dart store API -----');
@@ -46,7 +52,25 @@ class Client {
 
         switch (option) {
           case 1: break;
-          case 2: break;
+          
+          case 2:
+            final name = getNameInput('item');
+            final item = await _findItemByName(name);
+            if (item.id != 0) {
+              print('Item already exists: name ${item.name} (id: ${item.id})');
+            } else {
+              final categoryName = getNameInput('category');
+              final category = await _findCategoryByName(categoryName);
+              if (category.id == 0) {
+                print("category $name doesn't exist");
+              } else {
+                final newItem = Item(name: name, id: _randomId(), categoryId: category.id);
+                response = await stub!.createItem(newItem);
+                print('Item created | name: ${item.name} (id: ${item.id})');
+              }
+            }
+            break;
+
           case 3: break;
           case 4: break;
           case 5: break;
@@ -60,9 +84,8 @@ class Client {
             break;
 
           case 7:
-            print('Enter category name');
-            final name = stdin.readLineSync()!;
-            final category = await _findCategoryByName(name);
+            final name = getNameInput('category');
+            final category = await _findCategoryByName(name.toLowerCase());
             if (category.id != 0) {
               print('Category already exists: name ${category.name} (id: ${category.id})');
             } else {
@@ -71,14 +94,13 @@ class Client {
                 name: name
               );
               response = await stub!.createCategory(category);
-              print('category created: name ${category.name} (id: ${category.id})');
+              print('category created}| name: ${category.name} (id: ${category.id})');
             }
             break;
 
           case 8:
-            print('Enter category name:');
-            final name = stdin.readLineSync()!;
-            final category = await _findCategoryByName(name);
+            final name = getNameInput('category');
+            final category = await _findCategoryByName(name.toLowerCase());
             if (category.id != 0) {
               print('Please enter new category name');
               final newName = stdin.readLineSync()!;
@@ -94,8 +116,7 @@ class Client {
             break;
 
           case 9:
-            print('Enter category name:');
-            final name = stdin.readLineSync()!;
+            final name = getNameInput('category');
             final category = await _findCategoryByName(name.toLowerCase());
             if (category.id != 0) {
               print('category found | name: ${category.name} | id: ${category.id}');
@@ -105,8 +126,7 @@ class Client {
             break;
 
           case 10:
-            print('Enter category name:');
-            final name = stdin.readLineSync()!;
+            final name = getNameInput('category');
             final category = await _findCategoryByName(name.toLowerCase());
             if (category.id != 0) {
               await stub!.deleteCategory(category);
