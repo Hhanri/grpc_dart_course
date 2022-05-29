@@ -79,7 +79,16 @@ class Client {
             break;
 
           case 3: break;
-          case 4: break;
+          case 4:
+            final name = getNameInput('item');
+            final item = await _findItemByName(name.toLowerCase());
+            if (item.id != 0) {
+              print('item found | name: ${item.name} | id: ${item.id}');
+            } else {
+              print('no item found | no item matches with the name $name');
+            }
+            break;
+
           case 5: break;
 
           case 6:
