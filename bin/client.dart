@@ -49,6 +49,10 @@ class Client {
       print('no $type found | no $type matches with the name $name');
     }
 
+    void printDeleted({required String type, required String name}) {
+      print('$type $name successfully deleted');
+    }
+
     while (executionInProgress) {
       try {
         print('----- Welcome to the Dart store API -----');
@@ -76,7 +80,7 @@ class Client {
               final categoryName = getNameInput('category');
               final category = await _findCategoryByName(categoryName.toLowerCase());
               if (category.id == 0) {
-                print("category $name doesn't exist");
+                printNotFound(type: 'category', name: name);
               } else {
                 final newItem = Item(name: name, id: _randomId(), categoryId: category.id);
                 response = await stub!.createItem(newItem);
@@ -92,6 +96,7 @@ class Client {
               final newName = getNameInput('new item');
               if (newName != name) {
                 response = await stub!.editItem(Item(id: item.id, name: newName, categoryId: item.categoryId));
+                print('Item successfully updated | name: ${response.name} | id: ${response.id} | categoryId: ${response.categoryId} ');
               } else {
                 printSameNameError();
               }
@@ -110,7 +115,16 @@ class Client {
             }
             break;
 
-          case 5: break;
+          case 5:
+            final name = getNameInput('item');
+            var item = await _findItemByName(name);
+            if (item.id != 0) {
+              await stub!.deleteItem(item);
+              printDeleted(type: 'item', name: name);
+            } else {
+              printNotFound(type: 'item', name: name);
+            }
+            break;
 
           case 6:
             response = await stub!.getAllCategories(Empty());
@@ -166,7 +180,7 @@ class Client {
             final category = await _findCategoryByName(name.toLowerCase());
             if (category.id != 0) {
               await stub!.deleteCategory(category);
-              print('category $name successfully deleted');
+              printDeleted(type: 'category', name: name);
             } else {
               printNotFound(type: 'category', name: name);
             }
