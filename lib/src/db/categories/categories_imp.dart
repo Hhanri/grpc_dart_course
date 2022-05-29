@@ -15,8 +15,13 @@ class CategoriesServices implements InterfaceCategoriesServices {
 
   @override
   Category editCategory(Category category) {
-    // TODO: implement editCategory
-    throw UnimplementedError();
+    try {
+      final categoryIndex = categories.indexWhere((element) => element['id'] == category.id);
+      categories[categoryIndex]['name'] = category.name;
+    } catch (e) {
+      print(e);
+    }
+    return category;
   }
 
   @override

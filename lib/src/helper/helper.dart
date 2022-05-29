@@ -13,7 +13,6 @@ class HelperMethods {
   Item getItemFromMap(Map item) {
     final idTag = 1;
     final nameTag = 2;
-    final categoryTag = 3;
     int id = item['id'];
     String name = item['name'];
     int categoryId = item['categoryId'];

@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:math';
 import 'package:dart_grpc_server/dart_grpc_server.dart';
 import 'package:grpc/grpc.dart';
-import 'package:test/test.dart';
 
 class Client {
   ClientChannel? channel;
@@ -73,7 +72,23 @@ class Client {
               print('category created: name ${category.name} (id: ${category.id})');
             }
             break;
-          case 8: break;
+          case 8:
+            print('Enter category name:');
+            final name = stdin.readLineSync()!;
+            final category = await _findCategoryByName(name);
+            if (category.id != 0) {
+              print('Please enter new category name');
+              final newName = stdin.readLineSync()!;
+              if (newName != name) {
+                response = await stub!.editCategory(Category(id: category.id, name: newName));
+                print('Category successfully updated | name: ${response.name} | id: ${response.id}');
+              } else {
+                print('The new provided name is the same as the old one, no changes done');
+              }
+            } else {
+              print("category $name doesn't exist");
+            }
+            break;
           case 9:
             print('Enter category name:');
             final name = stdin.readLineSync()!;
