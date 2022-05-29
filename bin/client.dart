@@ -50,6 +50,7 @@ class Client {
           case 3: break;
           case 4: break;
           case 5: break;
+
           case 6:
             response = await stub!.getAllCategories(Empty());
             print('  --- Store product Categories ---  ');
@@ -57,6 +58,7 @@ class Client {
               print(' - name: ${category.name}, id: ${category.id}');
             });
             break;
+
           case 7:
             print('Enter category name');
             final name = stdin.readLineSync()!;
@@ -72,6 +74,7 @@ class Client {
               print('category created: name ${category.name} (id: ${category.id})');
             }
             break;
+
           case 8:
             print('Enter category name:');
             final name = stdin.readLineSync()!;
@@ -89,6 +92,7 @@ class Client {
               print("category $name doesn't exist");
             }
             break;
+
           case 9:
             print('Enter category name:');
             final name = stdin.readLineSync()!;
@@ -99,7 +103,18 @@ class Client {
               print('no category found | no category matches with the name $name');
             }
             break;
-          case 10: break;
+
+          case 10:
+            print('Enter category name:');
+            final name = stdin.readLineSync()!;
+            final category = await _findCategoryByName(name.toLowerCase());
+            if (category.id != 0) {
+              await stub!.deleteCategory(category);
+              print('category $name successfully deleted');
+            } else {
+              print('no category found | no category matches with the name $name');
+            }
+            break;
           case 11: break;
           default: print('invalid option');
         }
